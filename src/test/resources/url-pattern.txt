@@ -1,0 +1,6 @@
+url pattern:
+    auctioneer: /auctioneer/**
+    customer: /user/**
+    admin: /admin/**
+    venue: **/venue
+    auction: **/auction, **/venue/auction/

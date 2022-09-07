@@ -1,0 +1,25 @@
+spring:
+    mvc:
+        view:
+            suffix: .html
+            prefix: /
+        static-path-pattern: /**
+    web:
+        # 配置web资源路径
+        resources:
+            static-locations: classpath:/templates/, classpath:/static/, classpath:/resources/, classpath:/public/
+    # 不使用缓存技术
+    thymeleaf:
+        cache: false
+        prefix: classpath:/templates/
+    # 配置数据库
+    datasource:
+        username: xosmos
+        password: xosmos010502
+        url: jdbc:mysql://localhost:3306/mybatis?serverTimezone=UTC&useUnicode=True&characterEncoding=utf-8
+        driver-class-name: com.mysql.cj.jdbc.Driver
+# 整合MyBatis
+mybatis:
+    type-aliases-package: com.xosmos.entity
+    mapper-locations: classpath:mybatis/mapper/*.xml
+
