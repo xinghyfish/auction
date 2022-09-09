@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Login V1</title>
+    <title>系统管理员登陆</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--===============================================================================================-->
@@ -32,11 +32,11 @@
 
             <form class="login100-form validate-form">
 					<span class="login100-form-title">
-						会员登录
+						系统管理员登录
 					</span>
 
-                <div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-                    <input class="input100" type="text" name="email" placeholder="Email" required>
+                <div class="wrap-input100 validate-input">
+                    <input class="input100" type="text" id="adminID" name="adminID" placeholder="请输入系统管理员ID" required>
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="wrap-input100 validate-input" data-validate = "Password is required">
-                    <input class="input100" type="password" name="pwd" placeholder="Password" required>
+                    <input class="input100" type="password" id="pwd" name="pwd" placeholder="请输入系统管理员密码" required>
                     <span class="focus-input100"></span>
                     <span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
@@ -52,8 +52,8 @@
                 </div>
 
                 <div class="container-login100-form-btn">
-                    <button class="login100-form-btn">
-                        Login
+                    <button type="button" class="login100-form-btn" onclick="check()">
+                        登陆
                     </button>
                 </div>
 
@@ -73,9 +73,6 @@
     </div>
 </div>
 
-
-
-
 <!--===============================================================================================-->
 <script src="/vendor/jquery/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
@@ -89,9 +86,36 @@
     $('.js-tilt').tilt({
         scale: 1.1
     })
+
+    function check() {
+        let jsonObj = {
+            "adminID": $("#adminID").val(),
+            "pwd": $("#pwd").val()
+        };
+        console.log(jsonObj);
+        $.ajax({
+            url: "/admin/login",
+            method: "post",
+            data: JSON.stringify(jsonObj),
+            contentType : "application/json",
+            async: false,
+            cache: false,
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                if (data.code === 1) {
+                    alert("系统给管理员ID不存在！");
+                } else if (data.code === 2) {
+                    alert("密码错误，请重新输入！")
+                } else {
+                    window.location.href = "/admin/center";
+                }
+            }
+        });
+        return false;
+    }
 </script>
 <!--===============================================================================================-->
-<script src="/js/login.js"></script>
 
 </body>
 </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="register/html; charset=utf-8">
+  <title>注册</title>
+  <link rel="stylesheet" type="text/css" href="/css/register.css">
+</head>
+
+<body>
+<div id="loginDiv">
+  <form action="#">
+    <h1>注册</h1>
+    <p>用户姓名:<label for="customerName" id="name_trip"><input id="customerName" name="customerName" type="text" required></label></p>
+    <p>用户密码:<label for="password" id="password_trip"><input id="password" name="pwd" type="password" required></label></p>
+    <p>确认密码:<label for="surePassword" id="surePassword_trip"><input id="surePassword" type="password" required></label></p>
+    <p>电子邮件:<label for="email" id="emil_trip"></label><input id="email" name="email" type="email" required></p>
+    <p>手机号码:<label for="phone" id="phone_trip"><input id="phone" type="text" required></label></p>
+    <p style="text-align: center; margin-top: 30px;">
+      <input type="button" class="button" onclick="checkForm()" value="提交">
+      <input type="reset" class="button" value="重置">
+    </p>
+  </form>
+</div>
+<script src="/js/register.js"></script>
+</body>
+</html>

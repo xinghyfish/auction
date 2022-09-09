@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>拍卖品列表</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        th {
+            text-align: center;
+            margin: auto;
+        }
+        td {
+            text-align: center;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<table class="table table-bordered table-striped" style="width: 70%; margin: auto">
+    <caption style="text-align: center">拍卖品列表</caption>
+    <thead>
+        <tr>
+            <th>拍卖品编号</th>
+            <th>拍卖品名称</th>
+            <th>拍卖品起拍价</th>
+            <th>拍卖品状态</th>
+            <th>选项</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="auction : ${auctions}">
+            <td th:text="${auction.auctionID}"></td>
+            <td th:text="${auction.auctionName}"></td>
+            <td th:text="${auction.startPrice}"></td>
+            <td th:text="${auction.status}"></td>
+            <td><button class="button">修改</button></td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>

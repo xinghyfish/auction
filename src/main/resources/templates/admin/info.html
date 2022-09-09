@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>信息</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="page-header">
+    <h1 style="text-align: center">拍卖系统
+        <small>系统管理员页面</small>
+    </h1>
+    <div class="col-md-6 col-md-offset-3" style="text-align: center">
+        <h3 th:text="'管理员' + ${adminID} +'，欢迎使用本拍卖系统！'"></h3>
+    </div>
+</div>
+</body>
+</html>

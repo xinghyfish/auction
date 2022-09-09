@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xosmos.mapper.AuctioneerMapper">
+    <select id="queryAuctioneerByID" resultType="Auctioneer">
+        select * from auction.auctioneer
+        where auctioneerID = #{auctioneerID};
+    </select>
+
+    <select id="queryAllAuctioneers" resultType="Auctioneer">
+        select * from auction.auctioneer;
+    </select>
+
+    <insert id="addAuctioneer" parameterType="Auctioneer">
+        insert into auction.auctioneer(auctioneerName, pwd, email, phone)
+        values (#{auctioneerName}, #{pwd}, #{email}, #{phone});
+    </insert>
+
+    <update id="updateAuctioneer" parameterType="Auctioneer">
+        update auction.auctioneer
+        set auctioneerName = #{auctioneerName}, pwd = #{pwd}, email = #{email}, phone = #{phone}
+        where auctioneerID = #{auctioneerID};
+    </update>
+</mapper>

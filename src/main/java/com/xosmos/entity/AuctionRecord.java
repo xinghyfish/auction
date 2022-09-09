@@ -10,15 +10,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuctionRecord {
-    enum Status {
-        INIT, SUCCESS, FAIL
-    }
-
     private int recordID;
-    private Auction auction;
-    private Customer customer;
-    private AuctionVenue auctionVenue;
+    private int auctionID;
+    private int customerID;
+    private int auctionVenueID;
     private Timestamp startTime;
     private Timestamp endTime;
-    private Status status;
+    private int finalPrice;
+    private String status;
 }

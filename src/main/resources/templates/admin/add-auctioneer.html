@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>注册拍卖师账号</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        div {
+            margin: auto;
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="text-align: center" class="title">注册拍卖师账号</h2>
+<form role="form">
+    <div class="form-group">
+        <label for="auctioneerName">拍卖师用户名</label>
+        <input type="text" class="form-control" id="auctioneerName" name="auctioneerName" placeholder="请输入拍卖师用户名" required>
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="pwd">密码</label>
+        <input type="password" class="form-control" id="pwd" name="pwd" placeholder="请输入拍卖师密码" required>
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="sure-pwd">确认密码</label>
+        <input type="password" class="form-control" id="sure-pwd" name="surePwd" placeholder="请再次输入拍卖师密码" required>
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="email">邮箱</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="请输入拍卖师邮箱" required>
+    </div>
+    <br>
+    <div class="form-group">
+        <label for="phone">手机号码</label>
+        <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入拍卖师手机号码" required>
+    </div>
+    <br>
+    <div class="form-group" style="text-align: center">
+        <button type="button" style="text-align: center" class="btn btn-success" onclick="checkForm()">提交</button>
+    </div>
+    <br>
+    <div class="alert alert-danger" id="error-text" style="margin: auto; width: 60%; display: none"></div>
+</form>
+
+<script>
+    function checkForm() {
+        let err_msg = "";
+        let pwd_component = $("#pwd"), surePwd_component = $("#sure-pwd");
+        let auctioneerName_component = $("#auctioneerName");
+        if (pwd_component.val() !== surePwd_component.val()) {
+            err_msg = "两次输入的密码不一致，请重新输入。"
+        } else if (auctioneerName_component.val().length > 30) {
+            err_msg = "拍卖师用户名不得超过30个字符！";
+        } else if (auctioneerName_component.val().length === 0) {
+            err_msg = "拍卖师用户名不得为空！"
+        }
+        if (err_msg !== "") {
+            let err_component = document.getElementById("error-text");
+            err_component.style.display = "block";
+            err_component.innerText = "警告：" + err_msg;
+        } else {
+            $.ajax({
+                url: "/admin/add-auctioneer",
+                method: "post",
+                data: JSON.stringify({
+                    "auctioneerName": auctioneerName_component.val(),
+                    "pwd": pwd_component.val(),
+                    "email": $("#email").val(),
+                    "phone": $("#phone").val()
+                }),
+                dataType: "json",
+                async: false,
+                cache: false
+            });
+        }
+    }
+</script>
+
+</body>
+</html>

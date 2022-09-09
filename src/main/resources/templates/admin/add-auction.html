@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>增加拍卖品</title>
+</head>
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<body>
+
+<h2 style="text-align: center" class="title">新增拍卖品</h2>
+<form role="form">
+    <div class="form-group" style="margin: auto; width: 60%">
+        <label for="auctionName">拍卖品名称</label>
+        <input type="text" class="form-control" id="auctionName" name="auctionName" placeholder="请输入拍卖品名称">
+    </div>
+    <br>
+    <div class="form-group" style="margin: auto; width: 60%">
+        <label for="startPrice">拍卖品起拍价</label>
+        <input type="text" class="form-control" id="startPrice" name="auctionName" placeholder="请输入拍卖品起拍价">
+    </div>
+    <br>
+    <div class="form-group" style="text-align: center">
+        <button type="button" style="text-align: center" class="btn btn-success" onclick="checkForm()">提交</button>
+    </div>
+    <br>
+    <div class="alert alert-danger" id="error-text" style="margin: auto; width: 60%; display: none"></div>
+</form>
+
+<script>
+    function checkForm() {
+        let err_msg = "";
+        let name_component = $("#auctionName"), price_component = $("#startPrice");
+        if (name_component.val().length > 30)
+            err_msg = "拍卖品名称不得超过30个字符！";
+        else if (parseInt(price_component.val()) <= 0)
+            err_msg = "拍卖品起拍价格不得为非正数！"
+        else if (parseInt(price_component.val()) > Number.MAX_SAFE_INTEGER)
+            err_msg = "拍卖品起拍价格过高！";
+        if (err_msg !== "") {
+            let err_component = document.getElementById("error-text");
+            err_component.style.display = "block";
+            err_component.innerText = "警告：" + err_msg;
+        } else {
+            $.ajax({
+                url: "/admin/add-auction",
+                method: "post",
+                data: JSON.stringify({
+                    "auctionName": name_component.val(),
+                    "startPrice": price_component.val()
+                }),
+                contentType : "application/json",
+                dataType: "json",
+                async: false,
+                cache: false
+            });
+        }
+    }
+</script>
+</body>
+</html>

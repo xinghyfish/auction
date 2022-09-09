@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xosmos.mapper.AuctionMapper">
+    <select id="queryAuctionByID" resultType="Auction">
+        select * from auction.auction
+        where auctionID = #{auctionID};
+    </select>
+    
+    <select id="queryAllAuctions" resultType="Auction">
+        select * from auction.auction;
+    </select>
+    
+    <insert id="addAuction" parameterType="Auction">
+        insert into auction.auction(auctionName, startPrice, status)
+        values (#{auctionName}, #{startPrice}, #{status});
+    </insert>
+
+    <update id="updateAuction" parameterType="Auction">
+        update auction.auction
+        set auctionName = #{auctionName}, startPrice = #{startPrice}, status = #{status}
+        where auctionID = #{auctionID};
+    </update>
+</mapper>

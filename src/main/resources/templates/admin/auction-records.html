@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>拍卖信息统计</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<table class="table table-bordered table-striped" style="width: 80%; margin: auto">
+    <caption style="text-align: center">拍卖记录列表</caption>
+    <thead>
+    <tr>
+        <th>拍卖记录编号</th>
+        <th>拍卖品编号</th>
+        <th>成交客户编号</th>
+        <th>成交会场编号</th>
+        <th>开始时间</th>
+        <th>成交时间</th>
+        <th>交易金额</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="auctionRecord : ${auctionRecords}">
+        <td th:text="${auctionRecord.recordID}"></td>
+        <td th:text="${auctionRecord.auctionID}"></td>
+        <td th:text="${auctionRecord.customerID}"></td>
+        <td th:text="${auctionRecord.auctionVenueID}"></td>
+        <td th:text="${auctionRecord.startTime}"></td>
+        <td th:text="${auctionRecord.endTime}"></td>
+        <td th:text="${auctionRecord.finalPrice}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

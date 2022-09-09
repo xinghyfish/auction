@@ -15,8 +15,9 @@ public class LoginInterceptor implements HandlerInterceptor {
         String auctioneerName = (String) request.getSession().getAttribute("auctioneerName");
 
         if (username == null && adminID == null && auctioneerName == null) {
-            request.getRequestDispatcher("/login").forward(request, response);
+            request.getRequestDispatcher("/customer/login").forward(request, response);
             // not pass
+            System.out.println("NO!");
             return false;
         }
         // pass
