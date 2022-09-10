@@ -20,6 +20,11 @@ public class AuctionRecordServiceImpl implements AuctionRecordService {
     }
 
     @Override
+    public List<AuctionRecord> queryAuctionRecordByCustomerID(int customerID) {
+        return auctionRecordMapper.queryAuctionRecordByCustomerID(customerID);
+    }
+
+    @Override
     public List<AuctionRecord> queryAllAuctionRecords() {
         return auctionRecordMapper.queryAllAuctionRecords();
     }

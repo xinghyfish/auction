@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>个人拍卖纪录</title>
+</head>
+<style>
+    th {
+        text-align: center;
+        margin: auto;
+    }
+    td {
+        text-align: center;
+        margin: auto;
+    }
+</style>
+<body>
+
+<div class="page-header">
+    <h2 style="text-align: center">拍卖系统
+        <small th:text="'用户' + ${customerName} +'的拍卖纪录'"></small>
+    </h2>
+</div>
+
+<table class="table table-bordered table-striped" style="width: 70%; margin: auto">
+    <caption style="text-align: center">用户个人拍卖纪录</caption>
+    <thead>
+    <tr>
+        <th>拍卖记录编号</th>
+        <th>拍卖品编号</th>
+        <th>成交会场编号</th>
+        <th>开始时间</th>
+        <th>成交时间</th>
+        <th>交易金额</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="auctionRecord : ${auctionRecords}">
+        <td th:text="${auctionRecord.recordID}"></td>
+        <td th:text="${auctionRecord.auctionID}"></td>
+        <td th:text="${auctionRecord.auctionVenueID}"></td>
+        <td th:text="${auctionRecord.startTime}"></td>
+        <td th:text="${auctionRecord.endTime}"></td>
+        <td th:text="${auctionRecord.finalPrice}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

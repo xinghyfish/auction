@@ -12,8 +12,20 @@
         select * from auction.auctionRecord;
     </select>
 
+    <select id="queryAuctionRecordByCustomerID" resultType="AuctionRecord">
+        select * from auction.auctionRecord
+        where customerID = #{custimerID};
+    </select>
+
     <insert id="addAuctionRecord" parameterType="AuctionRecord">
-        insert into auction.auctionRecord(recordID, auctionID, customerID, venueID, startTime, endTime, finalPrice, status)
-        values (#{recordID}, #{auctionID}, #{customerID}, #{venueID}, #{startTime}, #{endTime}, #{finalPrice}, #{status});
+        insert into auction.auctionRecord(auctionID, customerID, venueID, startTime, endTime, finalPrice, status)
+        values (#{auctionID}, #{customerID}, #{venueID}, #{startTime}, #{endTime}, #{finalPrice}, #{status});
     </insert>
+
+    <update id="updateAuctionRecord" parameterType="AuctionRecord">
+        update auction.auctionRecord
+        set auctionID = #{auctionID}, customerID = #{customerID}, venueID = #{venueID},
+            startTime = #{startTime}, endTime = #{endTime}, finalPrice = #{finalPrice}, status = #{status}
+        where recordID = #{recordID};
+    </update>
 </mapper>

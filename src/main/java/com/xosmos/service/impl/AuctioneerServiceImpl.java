@@ -20,6 +20,11 @@ public class AuctioneerServiceImpl implements AuctioneerService {
     }
 
     @Override
+    public Auctioneer queryAuctioneerByEmail(String email) {
+        return auctioneerMapper.queryAuctioneerByEmail(email);
+    }
+
+    @Override
     public List<Auctioneer> queryAllAuctioneers() {
         return auctioneerMapper.queryAllAuctioneers();
     }

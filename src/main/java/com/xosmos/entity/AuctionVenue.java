@@ -17,4 +17,5 @@ public class AuctionVenue {
     private Auctioneer auctioneer;
     private Timestamp startTime;
     private Timestamp endTime;
+    private boolean on;
 }

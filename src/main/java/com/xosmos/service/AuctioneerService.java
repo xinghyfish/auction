@@ -9,6 +9,8 @@ import java.util.List;
 public interface AuctioneerService {
     Auctioneer queryAuctioneerByID(int auctioneerID);
 
+    Auctioneer queryAuctioneerByEmail(String email);
+
     List<Auctioneer> queryAllAuctioneers();
 
     int addAuctioneer(Auctioneer auctioneer);

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户个人信息</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        dt {
+            font-size: 20px;
+            margin-left: 35%;
+        }
+        dd {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2 class="title" style="text-align: center;">用户个人信息</h2>
+
+<br>
+
+<dl class="dl-horizontal">
+    <dt>用户名</dt>
+    <dd th:text="${customer.customerName}"></dd>
+    <br>
+    <dt>邮箱</dt>
+    <dd th:text="${customer.email}"></dd>
+    <br>
+    <dt>手机号码</dt>
+    <dd th:text="${customer.phone}"></dd>
+</dl>
+
+</body>
+</html>

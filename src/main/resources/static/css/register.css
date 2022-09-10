@@ -38,19 +38,13 @@ p,
     color: azure;
 }
 
-.sexDiv>input,
-.hobby>input {
-    width: 30px;
-    height: 17px;
-}
-
 input,
 select {
     margin-left: 15px;
     border-radius: 5px;
     border-style: hidden;
     height: 30px;
-    width: 140px;
+    width: 240px;
     background-color: rgb(255, 255, 255);
     outline: none;
     color: #000000;
@@ -76,8 +70,8 @@ h1 {
 }
 
 b {
-    margin-left: 50px;
+    margin-left: 25px;
     color: #FFEB3B;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: initial;
 }

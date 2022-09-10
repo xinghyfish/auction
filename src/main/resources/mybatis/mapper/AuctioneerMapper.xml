@@ -8,6 +8,11 @@
         where auctioneerID = #{auctioneerID};
     </select>
 
+    <select id="queryAuctioneerByEmail" parameterType="java.lang.String" resultType="Auctioneer">
+        select * from auction.auctioneer
+        where email = #{email};
+    </select>
+
     <select id="queryAllAuctioneers" resultType="Auctioneer">
         select * from auction.auctioneer;
     </select>

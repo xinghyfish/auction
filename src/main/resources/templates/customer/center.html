@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户客户端</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .exit-btn {
+            position: absolute;
+            top: 15%;
+            right: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#example-navbar-collapse">
+                <span class="sr-only">切换导航</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">客户端界面</a>
+        </div>
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        个人信息管理 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/customer/info">查看个人信息</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/customer/update-info">修改个人信息</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/customer/auction-venue">拍卖会场信息</a>
+                </li>
+                <li>
+                    <a href="/customer/auction-record">拍卖纪录</a>
+                </li>
+            </ul>
+            <button class="btn btn-danger exit-btn" onclick="window.location.href='/customer/login'">退出账号</button>
+        </div>
+
+    </div>
+</nav>
+<iframe th:src="@{/customer/{cite}(cite=${cite})}"
+        style="position: relative; height: 750px; width: 100%; border: none">
+</iframe>
+
+</body>
+</html>

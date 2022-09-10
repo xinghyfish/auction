@@ -10,6 +10,8 @@ public interface AuctionRecordService {
 
     AuctionRecord queryAuctionRecordByID(int auctionRecordID);
 
+    List<AuctionRecord> queryAuctionRecordByCustomerID(int customerID);
+
     List<AuctionRecord> queryAllAuctionRecords();
 
     int addAuctionRecord(AuctionRecord auctionRecord);

@@ -52,7 +52,7 @@
 				</div>
 
 				<div class="container-login100-form-btn">
-					<button class="login100-form-btn" id="login-btn" onclick="check()">
+					<button class="login100-form-btn" id="login-btn" type="button" onclick="check()">
 						登陆
 					</button>
 				</div>
@@ -67,7 +67,7 @@
 				</div>
 
 				<div class="text-center p-t-136">
-					<a class="txt2" href="/">
+					<a class="txt2" href="/customer/register">
 						注册账号
 						<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 					</a>
@@ -96,16 +96,16 @@
 		$.ajax({
 			url: "/customer/login",
 			method: "post",
-			data: {
+			data: JSON.stringify({
 				"email": $("#email").val(),
 				"pwd": $("#pwd").val()
-			},
+			}),
+			dataType: "json",
+			contentType: "application/json",
 			async: false,
 			cache: false,
 			success: function (data) {
-				let json_data = $.parseJSON(data);
-				console.log(json_data);
-				if (json_data.code !== 0) {
+				if (data.code !== 0) {
 					alert("邮箱不存在！");
 				} else {
 					window.location.href = "/customer/center";

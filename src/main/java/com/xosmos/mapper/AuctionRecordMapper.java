@@ -14,6 +14,8 @@ public interface AuctionRecordMapper {
 
     List<AuctionRecord> queryAllAuctionRecords();
 
+    List<AuctionRecord> queryAuctionRecordByCustomerID(int customerID);
+
     int addAuctionRecord(AuctionRecord auctionRecord);
 
     int updateAuctionRecord(AuctionRecord auctionRecord);

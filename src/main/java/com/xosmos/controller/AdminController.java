@@ -39,7 +39,7 @@ public class AdminController {
 
     @PostMapping("/login")
     @ResponseBody
-    public String login_post(@RequestBody Admin admin, HttpServletRequest request) {
+    public String login(@RequestBody Admin admin, HttpServletRequest request) {
         String plaintext = admin.getPwd();
         String ciphertext = EncryptUtils.encrypt(plaintext);
         Admin queryAdmin = adminService.queryAdminByAdminID(admin.getAdminID());

@@ -2,26 +2,120 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="register/html; charset=utf-8">
-  <title>注册</title>
-  <link rel="stylesheet" type="text/css" href="/css/register.css">
+    <meta http-equiv="Content-Type" content="register/html; charset=utf-8">
+    <title>注册</title>
+    <link rel="stylesheet" type="text/css" href="/css/register.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 </head>
 
 <body>
 <div id="loginDiv">
-  <form action="#">
-    <h1>注册</h1>
-    <p>用户姓名:<label for="customerName" id="name_trip"><input id="customerName" name="customerName" type="text" required></label></p>
-    <p>用户密码:<label for="password" id="password_trip"><input id="password" name="pwd" type="password" required></label></p>
-    <p>确认密码:<label for="surePassword" id="surePassword_trip"><input id="surePassword" type="password" required></label></p>
-    <p>电子邮件:<label for="email" id="emil_trip"></label><input id="email" name="email" type="email" required></p>
-    <p>手机号码:<label for="phone" id="phone_trip"><input id="phone" type="text" required></label></p>
-    <p style="text-align: center; margin-top: 30px;">
-      <input type="button" class="button" onclick="checkForm()" value="提交">
-      <input type="reset" class="button" value="重置">
-    </p>
-  </form>
+    <form action="#">
+        <h1>注册</h1>
+        <p>用户姓名: <label for="customerName" id="name_trip"><input id="customerName" name="customerName" type="text" required></label></p>
+        <b class="">用户名长度应该在6-30个字符之间</b>
+        <p>用户密码: <label for="password" id="password_trip"><input id="password" name="pwd" type="password" required></label></p>
+        <p>确认密码: <label for="surePassword" id="surePassword_trip"><input id="surePassword" type="password" required></label></p>
+        <p>电子邮件: <label for="email" id="emil_trip"></label><input id="email" name="email" type="email" required></p>
+        <p>手机号码: <label for="phone" id="phone_trip"><input id="phone" type="text" required></label></p>
+        <p style="text-align: center; margin-top: 30px;">
+            <button type="button" class="button" style="text-align: center;" onclick="checkForm()">提交</button>
+            <button type="reset" class="button" style="text-align: center;">重置</button>
+        </p>
+    </form>
 </div>
-<script src="/js/register.js"></script>
+<script>
+    let name = $("#customerName"), pwd = $("#password"), sure_pwd = $("#surePassword"), email = $("#email"), phone = $("#phone");
+
+    function checkForm() {
+        if (checkName() && checkPwd() && checkEmail() && checkPhone()) {
+            console.log("HAHA");
+            $.ajax({
+                url: "/customer/register",
+                method: "post",
+                data: JSON.stringify({
+                    "customerName": name.val(),
+                    "pwd": pwd.val(),
+                    "email": email.val(),
+                    "phone": phone.val(),
+                }),
+                dataType: "json",
+                contentType: "application/json",
+                async: false,
+                cache: false,
+                success: function (data) {
+                    if (data.code === 1) {
+                        alert("改邮箱已被注册");
+                    } else {
+                        window.location.href = "/customer/"
+                    }
+                }
+            })
+        }
+
+    }
+
+    function checkName() {
+        if (name.val() === null || name.val() === "") {
+            alert("用户名不得为空");
+            name.focus();
+            return false;
+        }
+        else if (name.val().length < 5 || name.val().length > 30) {
+            alert("用户名长度应该在5-30个字符之间！");
+            name.focus();
+            return false;
+        }
+        return true;
+    }
+
+    function checkEmail() {
+        let regExp = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        if (email.val() === null || email.val() === "") {
+            alert("Email不得为空！");
+            email.focus();
+            return false;
+        }
+        else if (!regExp.test(email.val())) {
+            alert("您输入的邮箱格式不正确！")
+            email.focus();
+            return false;
+        }
+        else return true;
+    }
+
+    function checkPwd() {
+        if (pwd.val() === null || pwd.val() === '') {
+            alert("密码不得为空");
+            pwd.focus();
+            return false;
+        }
+        else if (sure_pwd.val() === null || sure_pwd.val() === "") {
+            alert("确认密码不得为空");
+            sure_pwd.focus();
+            return false;
+        }
+        else if (pwd.val() !== sure_pwd.val()) {
+            alert("两次输入的密码不一致，请重新输入！");
+            sure_pwd.focus();
+            return false;
+        }
+        else return true;
+    }
+
+    function checkPhone() {
+        if (phone.val() === null || phone.val() === '') {
+            alert("手机号码不得为空");
+            phone.focus();
+            return false;
+        }
+        else if (phone.val().length < 8 || phone.val().length > 11) {
+            alert("手机号码不合法")
+            phone.focus();
+            return false;
+        }
+        else return true;
+    }
+</script>
 </body>
 </html>
