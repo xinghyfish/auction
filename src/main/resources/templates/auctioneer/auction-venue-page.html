@@ -44,7 +44,7 @@
                     <div style="width: 60%; margin: auto;">
                         <dl class="dl-horizontal info-dl">
                             <dt>拍卖品编号</dt>
-                            <dd th:text="${auction.auctionID}"></dd>
+                            <dd id="auctionID" th:text="${auction.auctionID}"></dd>
                             <br>
                             <dt>拍卖品名称</dt>
                             <dd th:text="${auction.auctionName}"></dd>
@@ -53,12 +53,14 @@
                             <dd th:text="${auction.startPrice}"></dd>
                             <br>
                             <dt>当前价格</dt>
-                            <dd th:text="${auction.startPrice}"></dd>
+                            <dd id="currentPrice" th:text="${auction.startPrice}"></dd>
+                            <dt>报价时间</dt>
+                            <dd id="updateTime" th:text="#{----}"></dd>
                         </dl>
                         <br>
                         <div style="text-align: center">
-                            <button class="btn btn-primary" onclick="startAuction()" th:disabled="${auction.status} != '待拍卖'">开始拍卖</button>
-                            <button class="btn btn-danger" onclick="endAuction()" th:disabled="${auction.status} != '拍卖中'">结束拍卖</button>
+                            <button id="start-btn" class="btn btn-primary" onclick="startAuction()" th:disabled="${auction.status} != '待拍卖'">开始拍卖</button>
+                            <button id="end-btn" class="btn btn-danger" onclick="endAuction()" th:disabled="${auction.status} != '拍卖中'">结束拍卖</button>
                         </div>
                     </div>
                 </div>
@@ -102,12 +104,56 @@
         });
     });
 
-    function startAuction() {
+    let auctionID = $("#auctionID");
+    let websocket = new WebSocket("/websocket/" + auctionID.val());
 
+    websocket.onopen = function () {
+        console.log("建立连接。");
+    }
+
+    websocket.onclose = function () {
+        console.log("解除连接。")
+    }
+
+    websocket.onerror = function () {
+        console.log("出现错误！");
+    }
+
+    websocket.onmessage = function (data) {
+        let json = JSON.parse(data);
+        switch (json["key"]) {
+            case "begin":
+                // do nothing
+                break;
+            case "price":
+                let currentPrice = json["price"];
+                let updateTime = json["updateTime"];
+                $("#currentPrice").text = currentPrice;
+                $("#updateTime").text = updateTime;
+                break;
+            case "end":
+                // do nothing
+                break;
+            default:
+                console.log("[ERROR] invalid json key '" + json.key + "'.");
+        }
+    }
+
+    function startAuction() {
+        websocket.send(JSON.stringify({
+            "key": "begin",
+            "auctionID": auctionID.val(),
+        }));
+        $("#start-btn").attr("disabled", "disabled"); // 禁用开始拍卖按钮
+        $("#end-btn").removeAttr("disabled");   //  解禁结束按钮
     }
 
     function endAuction() {
-
+        websocket.send(JSON.stringify({
+            "key": "end",
+            "auctionID": $("auctionID").val()
+        }));
+        $("#end-btn").attr("disabled", "disabled");
     }
 </script>
 </body>

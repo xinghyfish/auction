@@ -189,11 +189,15 @@ public class CustomerController {
     }
 
     @GetMapping("/auction-venue/{venueID}/{auctionID}")
-    public String auction_venue_auctionID(@PathVariable int venueID, @PathVariable int auctionID, Model model) {
+    public String auction_venue_auctionID(HttpServletRequest request,
+                                          @PathVariable int venueID, @PathVariable int auctionID, Model model) {
         List<Auction> auctions = auctionService.queryAuctionsByVenueID(venueID);
         model.addAttribute("auctions", auctions);
         Auction auction = auctionService.queryAuctionByID(auctionID);
         model.addAttribute("auction", auction);
+        HttpSession session = request.getSession();
+        Integer customerID = (Integer) session.getAttribute("customerID");
+        model.addAttribute("customerID", customerID);
         return "customer/auction-venue-page";
     }
 }
