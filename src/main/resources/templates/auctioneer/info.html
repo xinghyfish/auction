@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>用户个人信息</title>
+    <title>拍卖师个人信息</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -16,19 +16,19 @@
 </head>
 <body>
 
-<h2 class="page-header" style="text-align: center;">用户个人信息</h2>
+<h2 class="page-header" style="text-align: center;">拍卖师个人信息</h2>
 
 <br>
 
 <dl class="dl-horizontal info-dl">
-    <dt>用户名</dt>
-    <dd th:text="${customer.customerName}"></dd>
+    <dt>拍卖师用户名</dt>
+    <dd th:text="${auctioneer.auctioneerName}"></dd>
     <br>
     <dt>邮箱</dt>
-    <dd th:text="${customer.email}"></dd>
+    <dd th:text="${auctioneer.email}"></dd>
     <br>
     <dt>手机号码</dt>
-    <dd th:text="${customer.phone}"></dd>
+    <dd th:text="${auctioneer.phone}"></dd>
 </dl>
 
 </body>

@@ -3,4 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xosmos.mapper.AuctionVenueMapper">
+
+    <select id="queryOnlineAuctionVenue" resultType="AuctionVenue">
+        select * from auction.auctionVenue
+        where isOnline = 1;
+    </select>
+
+    <select id="queryAuctionVenueByID" resultType="AuctionVenue">
+        select * from auction.auctionVenue
+        where venueID = #{venueID};
+    </select>
+
+    <select id="queryAuctionVenueByAuctioneerID" resultType="AuctionVenue">
+        select *
+        from auction.auctionVenue
+        where auctioneerID = #{auctioneerID};
+    </select>
+
+    <insert id="addAuctionVenue" useGeneratedKeys="true" parameterType="AuctionVenue" keyProperty="venueID">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="venueID">
+            select LAST_INSERT_ID();
+        </selectKey>
+        insert into auction.auctionVenue(location, auctioneerID, startTime, endTime, isOnline)
+        values (#{location}, #{auctioneerID}, #{startTime}, #{endTime}, #{isOnline});
+    </insert>
 </mapper>

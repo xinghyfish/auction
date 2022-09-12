@@ -10,12 +10,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuctionRecord {
-    private int recordID;
-    private int auctionID;
-    private int customerID;
-    private int auctionVenueID;
+    private Integer recordID;
+    private Integer auctionID;
+    private Integer customerID;
+    private Integer venueID;
     private Timestamp startTime;
     private Timestamp endTime;
-    private int finalPrice;
-    private String status;
+    private Integer finalPrice;
+    private Integer status;
 }

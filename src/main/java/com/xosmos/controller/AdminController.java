@@ -94,7 +94,9 @@ public class AdminController {
     @PostMapping("/add-auction")
     public String add_auction(@RequestBody Auction auction) {
         auction.setStatus("待拍卖");
-        auctionService.addAuction(auction);
+        int flag = auctionService.addAuction(auction);
+        if (flag != 1)
+            System.err.println("添加拍卖品失败");
         return "redirect:/admin/auction-list";
     }
 
@@ -119,7 +121,7 @@ public class AdminController {
 
     @GetMapping("/auctioneer-list-iframe")
     public String auctioneer_list_iframe(Model model) {
-        List<Auctioneer> auctioneers = auctioneerService.queryAllAuctioneers();
+        List<Auctioneer> auctioneers = auctioneerService.queryLoginAuctioneers();
         model.addAttribute("auctioneers", auctioneers);
         return "admin/auctioneer-list";
     }
@@ -156,7 +158,9 @@ public class AdminController {
 
     @PostMapping("/logout-auctioneer")
     public String logout_auctioneer(@RequestBody Auctioneer auctioneer) {
-        auctioneerService.logoutAuctioneer(auctioneer);
+        int flag = auctioneerService.logoutAuctioneer(auctioneer);
+        if (flag != 1)
+            System.err.println("注销用户失败！");
         return "redirect:/admin/auctioneer-list";
     }
 }

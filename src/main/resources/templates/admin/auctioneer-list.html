@@ -31,7 +31,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="auctioneer : ${auctioneers}" th:if="${auctioneer.isLogout()} == false">
+    <tr th:each="auctioneer : ${auctioneers}">
         <td th:text="${auctioneer.auctioneerID}"></td>
         <td th:text="${auctioneer.auctioneerName}"></td>
         <td th:text="${auctioneer.email}"></td>

@@ -12,6 +12,10 @@ public interface AuctionService {
 
     List<Auction> queryAllAuctions();
 
+    List<Auction> queryUnsoldAuctions();
+
+    List<Auction> queryAuctionsByVenueID(int venueID);
+
     int addAuction(Auction auction);
 
     int updateAuction(Auction auction);

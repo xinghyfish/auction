@@ -14,6 +14,8 @@ public interface AuctionMapper {
 
     List<Auction> queryAllAuctions();
 
+    List<Auction> queryAuctionsOnStatus(String status);
+
     int addAuction(Auction auction);
 
     int updateAuction(Auction auction);

@@ -17,6 +17,16 @@
         where customerID = #{custimerID};
     </select>
 
+    <select id="queryAuctionRecordByAuctionVenueID" resultType="AuctionRecord">
+        select * from auction.auctionRecord
+        where venueID = #{venueID};
+    </select>
+    
+    <select id="queryAuctionRecordByVenueIDAndAuctionID" resultType="AuctionRecord">
+        select * from auction.auctionRecord
+        where venueID = #{venueID} and auctionID = #{auctionID};
+    </select>
+
     <insert id="addAuctionRecord" parameterType="AuctionRecord">
         insert into auction.auctionRecord(auctionID, customerID, venueID, startTime, endTime, finalPrice, status)
         values (#{auctionID}, #{customerID}, #{venueID}, #{startTime}, #{endTime}, #{finalPrice}, #{status});

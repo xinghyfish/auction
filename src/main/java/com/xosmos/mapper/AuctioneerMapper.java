@@ -14,6 +14,8 @@ public interface AuctioneerMapper {
 
     Auctioneer queryAuctioneerByEmail(String email);
 
+    List<Auctioneer> queryLoginAuctioneers();
+
     List<Auctioneer> queryAllAuctioneers();
 
     int addAuctioneer(Auctioneer auctioneer);

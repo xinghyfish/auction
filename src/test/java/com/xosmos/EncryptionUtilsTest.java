@@ -7,6 +7,6 @@ public class EncryptionUtilsTest {
 
     @Test
     public void testMD5() {
-        System.out.println(EncryptUtils.encrypt("admin0001"));
+        System.out.println(EncryptUtils.encrypt("123456"));
     }
 }

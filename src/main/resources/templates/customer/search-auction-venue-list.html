@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>拍卖会场列表</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle!important;
+        }
+    </style>
+</head>
+<body>
+
+<br>
+
+<form class="form-inline my-2 my-lg-0" role="search" target="_parent" method="post" action="/customer/search" style="text-align: center;">
+    <div class="input-group">
+        <input type="text" class="form-control" id="venueID" name="venueID" placeholder="检索会场号" >
+        <span class="input-group-btn">
+            <input type="submit" class="btn btn-secondary" value="搜索"/>
+        </span>
+    </div><!-- /input-group -->
+</form>
+
+<br>
+
+<table th:if="${flag} == true" class="table table-bordered table-striped" style="width: 70%; margin: auto">
+    <caption style="text-align: center">当前拍卖会场信息</caption>
+    <thead>
+    <tr>
+        <th>拍卖会编号</th>
+        <th>拍卖会地点</th>
+        <th>拍卖师信息</th>
+        <th>拍卖会开始时间</th>
+        <th>选项</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${auctionVenues} != null" th:each="auctionVenue : ${auctionVenues}">
+        <td th:text="${auctionVenue.venueID}"></td>
+        <td th:text="${auctionVenue.location}"></td>
+        <td th:text="${auctionVenue.auctioneerID}"></td>
+        <td th:text="${auctionVenue.startTime}"></td>
+        <td>
+            <button type="button"
+                    class="btn-info btn"
+                    th:data-longDescription="${auctionVenue.venueID}"
+                    onclick="enterVenue(this.getAttribute('data-longDescription'))">进入会场</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<h3 th:if="${auctionVenues} == null" style="text-align: center">
+        没有找到！
+</h3>
+
+<script>
+    function enterVenue(venueID) {
+        document.location.href = "/customer/auction-venue?venueID=" + venueID;
+    }
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Login V1</title>
+	<title>客户登陆页面</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
@@ -105,17 +105,19 @@
 			async: false,
 			cache: false,
 			success: function (data) {
-				if (data.code !== 0) {
+				if (data.code === 1) {
 					alert("邮箱不存在！");
+				} else if (data.code === 2) {
+					alert("密码错误，请重新输入！");
 				} else {
 					window.location.href = "/customer/center";
 				}
 			}
 		});
+		return false;
 	}
 </script>
 <!--===============================================================================================-->
-<script src="/js/login.js"></script>
 
 </body>
 </html>

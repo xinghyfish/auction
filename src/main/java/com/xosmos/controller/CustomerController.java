@@ -1,8 +1,9 @@
 package com.xosmos.controller;
 
-import com.xosmos.entity.AuctionRecord;
-import com.xosmos.entity.Customer;
+import com.xosmos.entity.*;
 import com.xosmos.service.AuctionRecordService;
+import com.xosmos.service.AuctionService;
+import com.xosmos.service.AuctionVenueService;
 import com.xosmos.service.CustomerService;
 import com.xosmos.utils.EncryptUtils;
 import com.xosmos.utils.JSONUtils;
@@ -23,6 +24,10 @@ public class CustomerController {
     private CustomerService customerService;
     @Autowired
     private AuctionRecordService auctionRecordService;
+    @Autowired
+    private AuctionVenueService auctionVenueService;
+    @Autowired
+    private AuctionService auctionService;
 
     @GetMapping("/login")
     public String login() {
@@ -38,12 +43,12 @@ public class CustomerController {
         Customer queryCustomer = customerService.queryCustomerByEmail(customer.getEmail());
         if (queryCustomer == null) {
             return JSONUtils.getJSONString(1, "邮箱不存在，请先进行注册！");
-        } else if (queryCustomer.getPwd().equals(customer.getPwd())) {
+        } else if (!queryCustomer.getPwd().equals(customer.getPwd())) {
             return JSONUtils.getJSONString(2, "密码错误，请重新输入！");
         } else {
-            System.out.println(queryCustomer);
-            request.setAttribute("customerName", queryCustomer.getCustomerName());
-            request.setAttribute("customerID", queryCustomer.getCustomerName());
+            HttpSession session = request.getSession();
+            session.setAttribute("customerName", queryCustomer.getCustomerName());
+            session.setAttribute("customerID", queryCustomer.getCustomerID());
             return JSONUtils.getJSONString(0);
         }
     }
@@ -67,6 +72,7 @@ public class CustomerController {
         if (queryCustomer != null) {
             return JSONUtils.getJSONString(1, "邮箱已经被注册");
         } else {
+            customer.setPwd(EncryptUtils.encrypt(customer.getPwd()));
             // 注册用户
             customerService.addCustomer(customer);
             return JSONUtils.getJSONString(0);
@@ -74,8 +80,9 @@ public class CustomerController {
     }
 
     @GetMapping("/center")
-    public String center(Model model) {
-        return "customer/info";
+    public String center(HttpServletRequest request, Model model) {
+        model.addAttribute("cite", "info");
+        return "customer/center";
     }
 
     @GetMapping("/info")
@@ -105,7 +112,13 @@ public class CustomerController {
     }
 
     @GetMapping("/update-info")
-    public String update_info(Model model, HttpServletRequest request) {
+    public String update_info(Model model) {
+        model.addAttribute("cite", "update-info-iframe");
+        return "customer/center";
+    }
+
+    @GetMapping("/update-info-iframe")
+    public String update_info_iframe(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String customerName = (String) session.getAttribute("customerName");
         model.addAttribute("customerName", customerName);
@@ -122,5 +135,65 @@ public class CustomerController {
         customerService.updateCustomer(old_customer);
 
         return "redirect:/customer/info";
+    }
+
+    @GetMapping("/auction-venue-list")
+    public String auction_venue_list(Model model) {
+        model.addAttribute("cite", "auction-venue-list-iframe");
+        return "customer/center";
+    }
+
+    @GetMapping("/auction-venue-list-iframe")
+    public String auction_venue_list_iframe(Model model) {
+        List<AuctionVenue> auctionVenues = auctionVenueService.queryOnlineAuctionVenue();
+        model.addAttribute("auctionVenues", auctionVenues);
+        return "customer/auction-venue-list";
+    }
+
+    @GetMapping("/auction-venue")
+    public String auction_venue(@RequestParam int venueID, Model model) {
+        List<AuctionRecord> auctionRecords = auctionRecordService.queryAuctionRecordByAuctionVenueID(venueID);
+        model.addAttribute("auctionRecords", auctionRecords);
+        return "customer/auction-venue";
+    }
+
+    @GetMapping("/auction-venue-iframe")
+    public String auction_venue_iframe(@RequestBody AuctionVenue auctionVenue, Model model) {
+        List<AuctionRecord> auctionRecords = auctionRecordService.queryAuctionRecordByAuctionVenueID(auctionVenue.getVenueID());
+        model.addAttribute("auctionRecords", auctionRecords);
+        return "customer/auction-venue";
+    }
+
+    @PostMapping("/search")
+    public String search(@RequestParam("venueID") int venueID, Model model) {
+        model.addAttribute("cite", "search-iframe/" + venueID);
+        return "customer/center";
+    }
+
+    @GetMapping("/search-iframe/{venueID}")
+    public String search_iframe(@PathVariable int venueID, Model model) {
+        AuctionVenue queryAuctionVenue = auctionVenueService.queryAuctionVenueByID(venueID);
+        model.addAttribute("flag", queryAuctionVenue != null);
+        model.addAttribute("auctionVenues",
+                queryAuctionVenue == null ? null : List.of(new AuctionVenue[]{queryAuctionVenue}));
+        return "customer/search-auction-venue-list";
+    }
+
+    @GetMapping("/auction-venue/{venueID}")
+    public String auctioneer_venue(@PathVariable int venueID, Model model) {
+        List<Auction> auctions = auctionService.queryAuctionsByVenueID(venueID);
+        AuctionVenue auctionVenue = auctionVenueService.queryAuctionVenueByID(venueID);
+        model.addAttribute("auctions", auctions);
+        model.addAttribute("auctionVenue", auctionVenue);
+        return "customer/auction-venue";
+    }
+
+    @GetMapping("/auction-venue/{venueID}/{auctionID}")
+    public String auction_venue_auctionID(@PathVariable int venueID, @PathVariable int auctionID, Model model) {
+        List<Auction> auctions = auctionService.queryAuctionsByVenueID(venueID);
+        model.addAttribute("auctions", auctions);
+        Auction auction = auctionService.queryAuctionByID(auctionID);
+        model.addAttribute("auction", auction);
+        return "customer/auction-venue-page";
     }
 }

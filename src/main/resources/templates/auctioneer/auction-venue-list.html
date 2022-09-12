@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>拍卖会场信息</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle!important;
+        }
+    </style>
+</head>
+<body>
+
+<table class="table table-bordered table-striped" style="width: 70%; margin: auto">
+    <caption style="text-align: center">当前拍卖会场信息</caption>
+    <thead>
+    <tr>
+        <th>拍卖会编号</th>
+        <th>拍卖会地点</th>
+        <th>拍卖会开始时间</th>
+        <th>选项</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="auctionVenue : ${auctionVenues}">
+        <td th:text="${auctionVenue.venueID}"></td>
+        <td th:text="${auctionVenue.location}"></td>
+        <td th:text="${auctionVenue.startTime}"></td>
+        <td>
+            <button type="button"
+                    class="btn-info btn"
+                    th:data-longDescription="${auctionVenue.venueID}"
+                    onclick="enterVenue(this.getAttribute('data-longDescription'))"
+                    th:disabled="!${auctionVenue.isOnline}"
+                    th:text="${auctionVenue.isOnline} ? 进入会场 : 已结束"
+                    style="width: 90px"
+            >
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<script>
+    function enterVenue(venueID) {
+        document.location.href = "/auctioneer/auction-venue/" + venueID;
+    }
+
+</script>
+
+</body>
+</html>

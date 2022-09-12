@@ -13,6 +13,8 @@ public interface AuctioneerService {
 
     List<Auctioneer> queryAllAuctioneers();
 
+    List<Auctioneer> queryLoginAuctioneers();
+
     int addAuctioneer(Auctioneer auctioneer);
 
     int logoutAuctioneer(Auctioneer auctioneer);

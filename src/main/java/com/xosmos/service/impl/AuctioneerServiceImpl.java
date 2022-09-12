@@ -30,6 +30,11 @@ public class AuctioneerServiceImpl implements AuctioneerService {
     }
 
     @Override
+    public List<Auctioneer> queryLoginAuctioneers() {
+        return auctioneerMapper.queryLoginAuctioneers();
+    }
+
+    @Override
     public int addAuctioneer(Auctioneer auctioneer) {
         return auctioneerMapper.addAuctioneer(auctioneer);
     }

@@ -17,6 +17,11 @@
         select * from auction.auctioneer;
     </select>
 
+    <select id="queryLoginAuctioneers" resultType="Auctioneer">
+        select * from auction.auctioneer
+        where isLogout = false;
+    </select>
+
     <insert id="addAuctioneer" parameterType="Auctioneer">
         insert into auction.auctioneer(auctioneerName, pwd, email, phone)
         values (#{auctioneerName}, #{pwd}, #{email}, #{phone});

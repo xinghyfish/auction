@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加拍卖会场信息</title>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .middle {
+            text-align: center;
+            vertical-align: middle!important;
+        }
+
+        .main {
+            width: 15%;
+            margin: auto;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h2 class="page-header middle">添加拍卖会场信息</h2>
+
+<form class="middle" method="post" action="/auctioneer/add-auction-venue" target="_parent">
+    <div class="form-group main">
+        <label for="location">拍卖地点 </label>
+        <input name="location" class="form-control" id="location" placeholder="请输入拍卖地点">
+    </div>
+    <br/>
+    <br/>
+    <div class="main">
+        <div class="form-check" th:each="auction : ${auctions}">
+            <input class="form-check-input" type="checkbox" name="auctionIDs" th:value="${auction.auctionID}" th:id="${auction.auctionID}">
+            <label class="form-check-label" th:for="${auction.auctionID}" th:text="${auction.auctionID} + '-' + ${auction.auctionName}">
+            </label>
+        </div>
+    </div>
+    <br>
+    <input type="submit" class="btn btn-primary middle" value="提交">
+</form>
+
+
+</body>
+</html>

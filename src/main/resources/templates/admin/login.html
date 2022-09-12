@@ -88,21 +88,18 @@
     })
 
     function check() {
-        let jsonObj = {
-            "adminID": $("#adminID").val(),
-            "pwd": $("#pwd").val()
-        };
-        console.log(jsonObj);
         $.ajax({
             url: "/admin/login",
             method: "post",
-            data: JSON.stringify(jsonObj),
+            data: JSON.stringify({
+                "adminID": $("#adminID").val(),
+                "pwd": $("#pwd").val()
+            }),
+            dataType: "json",
             contentType : "application/json",
             async: false,
             cache: false,
-            dataType: "json",
             success: function (data) {
-                console.log(data);
                 if (data.code === 1) {
                     alert("系统给管理员ID不存在！");
                 } else if (data.code === 2) {

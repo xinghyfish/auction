@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>修改个人信息</title>
+    <title>修改拍卖师个人信息</title>
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,8 +20,8 @@
 
 <form role="form">
     <div class="form-group">
-        <label for="customerName">用户名 </label>
-        <input type="text" class="form-control" id="customerName" name="customerName" th:value="${customerName}" placeholder="请输入您的用户名" required>
+        <label for="auctioneerName">用户名 </label>
+        <input type="text" class="form-control" id="auctioneerName" name="auctioneerName" th:value="${auctioneerName}" placeholder="请输入您的用户名" required>
     </div>
     <br>
     <div class="form-group">
@@ -45,12 +45,12 @@
     function checkForm() {
         let err_msg = "";
         let pwd_component = $("#pwd"), surePwd_component = $("#sure-pwd");
-        let customerName_component = $("#customerName");
+        let auctioneerName_component = $("#customerName");
         if (pwd_component.val() !== surePwd_component.val()) {
             err_msg = "两次输入的密码不一致，请重新输入。"
-        } else if (customerName_component.val().length > 30) {
+        } else if (auctioneerName_component.val().length > 30) {
             err_msg = "用户名不得超过30个字符！";
-        } else if (customerName_component.val().length === 0) {
+        } else if (auctioneerName_component.val().length === 0) {
             err_msg = "用户名不得为空！"
         }
         if (err_msg !== "") {
@@ -59,10 +59,10 @@
             err_component.innerText = "警告：" + err_msg;
         } else {
             $.ajax({
-                url: "/customer/update-info",
+                url: "/auctioneer/update-info",
                 method: "post",
                 data: JSON.stringify({
-                    "customerName": customerName_component.val(),
+                    "auctioneerName": auctioneerName_component.val(),
                     "pwd": pwd_component.val()
                 }),
                 dataType: "json",

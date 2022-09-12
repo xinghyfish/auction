@@ -11,6 +11,12 @@
     <select id="queryAllAuctions" resultType="Auction">
         select * from auction.auction;
     </select>
+
+    <select id="queryAuctionsOnStatus" resultType="Auction" parameterType="java.lang.String">
+        select *
+        from auction.auction
+        where status = #{status};
+    </select>
     
     <insert id="addAuction" parameterType="Auction">
         insert into auction.auction(auctionName, startPrice, status)

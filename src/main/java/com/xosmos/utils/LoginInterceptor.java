@@ -4,20 +4,22 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URL;
 
 public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String username = (String) request.getSession().getAttribute("customerName");
-        String adminID = (String) request.getSession().getAttribute("adminID");
-        String auctioneerName = (String) request.getSession().getAttribute("auctioneerName");
+        Integer customerID = (Integer) request.getSession().getAttribute("customerID");
+        Integer adminID = (Integer) request.getSession().getAttribute("adminID");
+        Integer auctioneerID = (Integer) request.getSession().getAttribute("auctioneerID");
 
-        if (username == null && adminID == null && auctioneerName == null) {
-            request.getRequestDispatcher("/customer/login").forward(request, response);
+        if (customerID == null && adminID == null && auctioneerID == null) {
+            String domain = request.getRequestURI().split("/")[1];
+            request.getRequestDispatcher("/" + domain + "/login").forward(request, response);
             // not pass
-            System.out.println("NO!");
+            System.err.println("refuse to visit cite [" + request.getRequestURL() + "]");
             return false;
         }
         // pass
