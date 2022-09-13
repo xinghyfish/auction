@@ -15,4 +15,6 @@ public interface AuctionVenueService {
     List<AuctionVenue> queryAuctionVenueByAuctioneerID(int auctioneerID);
 
     int addAuctionVenue(AuctionVenue auctionVenue);
+
+    int updateAuctionVenue(AuctionVenue auctionVenue);
 }

@@ -55,20 +55,20 @@
                         <dd id="currentPrice" th:text="${auction.startPrice}"></dd>
                         <br>
                         <dt>报价时间</dt>
-                        <dd id="updateTime" th:text="#{----}"></dd>
+                        <dd id="updateTime">暂无报价</dd>
+                        <br>
+                        <dt><label for="price">输入报价</label></dt>
+                        <dd><input type="text" class="form-control" id="price" name="price" placeholder="请输入您的报价"
+                                   style="width: 60%; margin: auto; display: inline"></dd>
                     </dl>
                     <br>
                     <div style="text-align: center">
-                        <div class="form-group">
-                            <label for="price">输入报价：</label>
-                            <input type="password" class="form-control" id="price" name="pwd" placeholder="请输入您的报价"
-                                    style="width: 40%; margin: auto; display: inline">
-                        </div>
-                        <button id="price-btn" class="btn btn-success" onclick="sendNewPrice()" th:disabled="${auction.status} != 1">报价</button>
+                        <button id="price-btn" class="btn btn-success" onclick="sendNewPrice()" th:disabled="${auction.status} != '拍卖中'">报价</button>
                     </div>
                 </div>
             </div>
         </div>
+        <span style="display: none" th:text="${venueID}" id="venueID"></span>
     </div>
     <!-- /#page-content-wrapper -->
 
@@ -105,65 +105,73 @@
         $('[data-toggle="offcanvas"]').click(function () {
             $('#wrapper').toggleClass('toggled');
         });
-
-        let auctionID = $("#auctionID");
-        let websocket = new WebSocket("/websocket/" + auctionID.val());
-
-        websocket.onopen = function () {
-            console.log("建立连接。");
-        }
-
-        websocket.onclose = function () {
-            console.log("解除连接。")
-        }
-
-        websocket.onerror = function () {
-            console.log("出现错误！");
-        }
-
-        websocket.onmessage = function (data) {
-            let json = JSON.parse(data);
-            let price_btn = $("#price-btn");
-            switch (json["key"]) {
-                case "begin":
-                    price_btn.removeAttr("disabled");
-                    break;
-                case "price":
-                    let currentPrice = json["price"];
-                    let updateTime = json["updateTime"];
-                    $("#currentPrice").text = currentPrice;
-                    $("#updateTime").text = updateTime;
-                    break;
-                case "end":
-                    price_btn.attr("disabled", "disabled");
-                    break;
-                default:
-                    console.log("[ERROR] Invalid Key '" + json["key"] + "'");
-            }
-        }
     });
+
+    let websocket = new WebSocket("ws://localhost:8080/websocket/" + $("#venueID").text());
+
+    websocket.onopen = function () {
+        console.log("建立连接。");
+    }
+
+    websocket.onclose = function () {
+        console.log("解除连接。")
+    }
+
+    websocket.onerror = function () {
+        console.log("出现错误！");
+    }
+
+    websocket.onmessage = function (message) {
+        let json = JSON.parse(message.data);
+        let price_btn = $("#price-btn");
+        switch (json.key) {
+            case "begin":
+                price_btn.attr("disabled", false);
+                break;
+            case "price":
+                let currentPrice = json.currentPrice;
+                let updateTime = json.updateTime;
+                $("#currentPrice").text(currentPrice);
+                $("#updateTime").text(updateTime);
+                break;
+            case "end":
+                price_btn.attr("disabled", true);
+                if (json.status === '已拍卖') {
+                    if (json.customerID !== parseInt($("#customerID").text())) {
+                        alert("拍卖已结束，客户" + json.customerID + "拍下该拍品。");
+                    } else {
+                        alert("拍卖已结束，恭喜您拍下该拍品！");
+                    }
+                } else {
+                    alert("拍卖已结束，该拍品流拍。")
+                }
+                break;
+            default:
+                console.log("[ERROR] Invalid Key '" + json["key"] + "'");
+        }
+    }
 
     function sendNewPrice() {
         if (!checkPrice())
             return;
         websocket.send(JSON.stringify({
             "key": "price",
-            "customerID": parseInt($("#customerID").val()),
+            "customerID": parseInt($("#customerID").text()),
             "currentPrice": parseInt($("#price").val())
         }));
     }
 
     function checkPrice() {
-        let price = $("#price");
+        let price = $("#price").val();
         let num = parseInt(price);
-        if (!isNaN(num)) {
+        if (isNaN(num)) {
             alert("您输入的不是数字！");
             return false;
         } else if (num < 0) {
             alert("您输入的数字为负数，不合法！");
             return false;
-        } else if (num < parseInt($("#startPrice").val())) {
-            alert("您的价格不能低于起拍价格！");
+        } else if (num < parseInt($("#startPrice").text())) {
+            alert("您的价格不能低于起拍价格！")
             return false;
         }
         return true;

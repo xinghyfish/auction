@@ -21,7 +21,7 @@
 {
   "key": "price",
   "customerID": 1,
-  "price": 10000
+  "currentPrice": 10000
 }
 ```
 

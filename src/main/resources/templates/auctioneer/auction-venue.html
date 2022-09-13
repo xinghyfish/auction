@@ -43,7 +43,7 @@
                     <p class="lead">当前会场信息</p>
                     <dl class="dl-horizontal info-dl" style="width: 60%; margin: auto;">
                         <dt>拍卖会场编号</dt>
-                        <dd th:text="${auctionVenue.venueID}"></dd>
+                        <dd id="venueID" th:text="${auctionVenue.venueID}"></dd>
                         <br>
                         <dt>拍卖会场地点</dt>
                         <dd th:text="${auctionVenue.location}"></dd>
@@ -54,6 +54,12 @@
                 </div>
             </div>
         </div>
+        <br>
+        <div style="margin: auto; text-align: center;">
+            <button id="end-btn" class="btn btn-danger" onclick="endAuction()">结束拍卖</button>
+        </div>
+
+
     </div>
     <!-- /#page-content-wrapper -->
 
@@ -91,6 +97,27 @@
             $('#wrapper').toggleClass('toggled');
         });
     });
+
+    let websocket = new WebSocket("ws://localhost:8080/websocket/" + $("#venueID").text());
+    console.log(websocket.url);
+
+    websocket.onmessage = function (message) {
+        let json = JSON.parse(message.data);
+        switch (json.key) {
+            case "endVenue":
+                window.location.href = "/auctioneer/auction-venue-list-iframe";
+                break;
+            default:
+                console.log("[ERROR] Invalid key '" + json.key + "'");
+        }
+    }
+
+    function endAuction() {
+        websocket.send(JSON.stringify({
+            "key": "endVenue",
+        }));
+        $("#end-btn").attr("disabled", true);
+    }
 </script>
 </body>
 </html>

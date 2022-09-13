@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>个人拍卖纪录</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <style>
     th {
@@ -38,7 +41,7 @@
     <tr th:each="auctionRecord : ${auctionRecords}">
         <td th:text="${auctionRecord.recordID}"></td>
         <td th:text="${auctionRecord.auctionID}"></td>
-        <td th:text="${auctionRecord.auctionVenueID}"></td>
+        <td th:text="${auctionRecord.venueID}"></td>
         <td th:text="${auctionRecord.startTime}"></td>
         <td th:text="${auctionRecord.endTime}"></td>
         <td th:text="${auctionRecord.finalPrice}"></td>

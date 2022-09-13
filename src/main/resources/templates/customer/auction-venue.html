@@ -23,7 +23,7 @@
                 </a>
             </li>
             <li th:each="auction : ${auctions}">
-                <a th:href="@{'/auctioneer/auction-venue/' + ${auctionVenue.venueID} + '/' + ${auction.auctionID}}" th:text="${auction.auctionID} + '-' + ${auction.auctionName}"><i class="fa fa-fw fa-flag"></i></a>
+                <a th:href="@{'/customer/auction-venue/' + ${auctionVenue.venueID} + '/' + ${auction.auctionID}}" th:text="${auction.auctionID} + '-' + ${auction.auctionName}"><i class="fa fa-fw fa-flag"></i></a>
             </li>
         </ul>
     </nav>
@@ -91,6 +91,19 @@
             $('#wrapper').toggleClass('toggled');
         });
     });
+
+    let websocket = new WebSocket("ws://localhost:8080/websocket/" + $("#venueID").text());
+
+    websocket.onmessage = function (message) {
+        let json = JSON.parse(message.data);
+        switch (json.key) {
+            case "endVenue":
+                window.location.href = "/customer/auction-venue-list";
+                break;
+            default:
+                console.log("[ERROR] Invalid key '" + json.key + "'");
+        }
+    }
 </script>
 </body>
 </html>

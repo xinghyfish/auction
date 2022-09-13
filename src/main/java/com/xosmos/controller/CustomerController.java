@@ -96,7 +96,7 @@ public class CustomerController {
 
     @GetMapping("/auction-records")
     public String auction_records(Model model) {
-        model.addAttribute("cite", "/auction-records-iframe");
+        model.addAttribute("cite", "auction-records-iframe");
         return "customer/center";
     }
 

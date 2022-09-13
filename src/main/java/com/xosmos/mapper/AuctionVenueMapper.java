@@ -18,4 +18,6 @@ public interface AuctionVenueMapper {
 
     int addAuctionVenue(AuctionVenue auctionVenue);
 
+    int updateAuctionVenue(AuctionVenue auctionVenue);
+
 }

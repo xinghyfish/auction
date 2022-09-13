@@ -20,7 +20,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" role="navigation" style="margin-bottom: 0">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -48,7 +48,7 @@
                     <a href="/customer/auction-venue-list">拍卖会场信息</a>
                 </li>
                 <li>
-                    <a href="/customer/auction-record">拍卖纪录</a>
+                    <a href="/customer/auction-records">拍卖纪录</a>
                 </li>
             </ul>
             <button class="btn btn-danger exit-btn" onclick="window.location.href='/customer/login'">退出账号</button>
@@ -56,9 +56,11 @@
 
     </div>
 </nav>
-<iframe th:src="@{/customer/{cite}(cite=${cite})}"
-        style="position: relative; height: 750px; width: 100%; border: none">
-</iframe>
+<div style="position: absolute; height: 808px; width: 100%;">
+    <iframe th:src="@{/customer/{cite}(cite=${cite})}"
+            style="position: relative; height: 100%; width: 100%; border: none;">
+    </iframe>
+</div>
 
 </body>
 

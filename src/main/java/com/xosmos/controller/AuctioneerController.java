@@ -132,20 +132,26 @@ public class AuctioneerController {
             int venueID = auctionVenue.getVenueID();
             // 2. 创建各个拍卖纪录
             for (String auctionIDString : auctionIDStrings) {
-                Integer auctionID = Integer.valueOf(auctionIDString);
+                int auctionID = Integer.parseInt(auctionIDString);
                 AuctionRecord auctionRecord =
                         new AuctionRecord(null, auctionID, null,
                                 venueID, null, null, null,  0);
-                int flag1 = auctionRecordService.addAuctionRecord(auctionRecord);
+                Auction auction = auctionService.queryAuctionByID(auctionID);
+                auction.setStatus("拍卖中");
+                int flag1 = auctionService.updateAuction(auction);
                 if (flag1 != 1)
+                    System.err.println("更新失败！");
+                int flag2 = auctionRecordService.addAuctionRecord(auctionRecord);
+                if (flag2 != 1)
                     System.err.println("记录插入失败！");
             }
         }
         return "redirect:/auctioneer/auction-venue-list";
     }
 
-    @GetMapping("/auction-venue/{venueID}")
-    public String auctioneer_venue(@PathVariable int venueID, Model model) {
+    @GetMapping("/auction-venue/{venueIDString}")
+    public String auctioneer_venue(@PathVariable String venueIDString, Model model) {
+        int venueID = Integer.parseInt(venueIDString);
         List<Auction> auctions = auctionService.queryAuctionsByVenueID(venueID);
         AuctionVenue auctionVenue = auctionVenueService.queryAuctionVenueByID(venueID);
         model.addAttribute("auctions", auctions);
@@ -159,6 +165,19 @@ public class AuctioneerController {
         model.addAttribute("auctions", auctions);
         Auction auction = auctionService.queryAuctionByID(auctionID);
         model.addAttribute("auction", auction);
+        model.addAttribute("venueID", venueID);
         return "auctioneer/auction-venue-page";
+    }
+
+    @PostMapping("/auction-venue/{venueID}/end")
+    public String auction_venue_end(@PathVariable int venueID) {
+        Timestamp endTime = new Timestamp(System.currentTimeMillis());
+        AuctionVenue auctionVenue = auctionVenueService.queryAuctionVenueByID(venueID);
+        auctionVenue.setEndTime(endTime);
+        auctionVenue.setOnline(false);
+        int flag = auctionVenueService.updateAuctionVenue(auctionVenue);
+        if (flag != 1)
+            System.err.println("更新失败！");
+        return "redirect:auctioneer/auction-venue-list-iframe";
     }
 }

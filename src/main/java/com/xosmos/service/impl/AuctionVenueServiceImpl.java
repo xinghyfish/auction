@@ -33,4 +33,9 @@ public class AuctionVenueServiceImpl implements AuctionVenueService {
     public int addAuctionVenue(AuctionVenue auctionVenue) {
         return auctionVenueMapper.addAuctionVenue(auctionVenue);
     }
+
+    @Override
+    public int updateAuctionVenue(AuctionVenue auctionVenue) {
+        return auctionVenueMapper.updateAuctionVenue(auctionVenue);
+    }
 }

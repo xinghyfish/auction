@@ -27,4 +27,10 @@
         insert into auction.auctionVenue(location, auctioneerID, startTime, endTime, isOnline)
         values (#{location}, #{auctioneerID}, #{startTime}, #{endTime}, #{isOnline});
     </insert>
+
+    <update id="updateAuctionVenue">
+        update auction.auctionVenue
+        set endTime = #{endTime}, isOnline = #{isOnline}
+        where venueID = #{venueID};
+    </update>
 </mapper>

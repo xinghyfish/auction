@@ -47,11 +47,11 @@
             <td th:text="${auctionVenue.auctioneerID}"></td>
             <td th:text="${auctionVenue.startTime}"></td>
             <td>
-                <button th:if="${auctionVenue.isOnline} == 1" type="button"
+                <button th:if="${auctionVenue.isOnline} == true" type="button"
                         class="btn-info btn"
                         th:data-longDescription="${auctionVenue.venueID}"
                         onclick="enterVenue(this.getAttribute('data-longDescription'))">进入会场</button>
-                <button th:if="${auctionVenue.isOnline()} == 0" type="button"
+                <button th:if="${auctionVenue.isOnline} == false" type="button"
                         class="btn btn-secondary btn-lg" disabled>拍卖已结束</button>
             </td>
         </tr>
@@ -60,7 +60,7 @@
 
 <script>
     function enterVenue(venueID) {
-        document.location.href = "/customer/auction-venue?venueID=" + venueID;
+        document.location.href = "/customer/auction-venue/" + venueID;
     }
 </script>
 </body>

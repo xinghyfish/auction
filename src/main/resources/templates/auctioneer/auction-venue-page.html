@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>拍卖会场</title>
+    <title>拍卖品</title>
     <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/bootstrap-3.3.4.css">
     <link rel="stylesheet" href="/css/style.css">
 
@@ -18,7 +18,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
         <ul class="nav sidebar-nav">
             <li class="sidebar-brand">
-                <a href="#">
+                <a th:href="@{'/auctioneer/auction-venue/' + ${venueID}}">
                     拍卖品列表
                 </a>
             </li>
@@ -54,18 +54,20 @@
                             <br>
                             <dt>当前价格</dt>
                             <dd id="currentPrice" th:text="${auction.startPrice}"></dd>
+                            <br>
                             <dt>报价时间</dt>
-                            <dd id="updateTime" th:text="#{----}"></dd>
+                            <dd id="updateTime">暂无报价</dd>
                         </dl>
                         <br>
                         <div style="text-align: center">
-                            <button id="start-btn" class="btn btn-primary" onclick="startAuction()" th:disabled="${auction.status} != '待拍卖'">开始拍卖</button>
+                            <button id="start-btn" class="btn btn-primary" onclick="startAuction()" th:disabled="${auction.status} != '未拍卖'">开始拍卖</button>
                             <button id="end-btn" class="btn btn-danger" onclick="endAuction()" th:disabled="${auction.status} != '拍卖中'">结束拍卖</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <span style="display: none" id="venueID" th:text="${venueID}"></span>
     </div>
     <!-- /#page-content-wrapper -->
 
@@ -104,35 +106,39 @@
         });
     });
 
-    let auctionID = $("#auctionID");
-    let websocket = new WebSocket("/websocket/" + auctionID.val());
+    let ws = new WebSocket("ws://localhost:8080/websocket/" + $("#venueID").text());
 
-    websocket.onopen = function () {
+    ws.onopen = function () {
         console.log("建立连接。");
     }
 
-    websocket.onclose = function () {
+    ws.onclose = function () {
         console.log("解除连接。")
     }
 
-    websocket.onerror = function () {
+    ws.onerror = function () {
         console.log("出现错误！");
     }
 
-    websocket.onmessage = function (data) {
-        let json = JSON.parse(data);
-        switch (json["key"]) {
+    ws.onmessage = function (message) {
+        let json = JSON.parse(message.data);
+        console.log(json)
+        switch (json.key) {
             case "begin":
                 // do nothing
                 break;
             case "price":
-                let currentPrice = json["price"];
-                let updateTime = json["updateTime"];
-                $("#currentPrice").text = currentPrice;
-                $("#updateTime").text = updateTime;
+                let currentPrice = json.currentPrice;
+                let updateTime = json.updateTime;
+                $("#currentPrice").text(currentPrice);
+                $("#updateTime").text(updateTime);
                 break;
             case "end":
-                // do nothing
+                if (json.status === '已拍卖') {
+                    alert("拍卖已结束，客户" + json.customerID + "拍下该拍品。");
+                } else {
+                    alert("拍卖已结束，该拍品流拍。")
+                }
                 break;
             default:
                 console.log("[ERROR] invalid json key '" + json.key + "'.");
@@ -140,20 +146,20 @@
     }
 
     function startAuction() {
-        websocket.send(JSON.stringify({
+        ws.send(JSON.stringify({
             "key": "begin",
-            "auctionID": auctionID.val(),
+            "auctionID": parseInt($("#auctionID").text()),
         }));
-        $("#start-btn").attr("disabled", "disabled"); // 禁用开始拍卖按钮
-        $("#end-btn").removeAttr("disabled");   //  解禁结束按钮
+        $("#start-btn").attr("disabled", true); // 禁用开始拍卖按钮
+        $("#end-btn").attr("disabled", false);   //  解禁结束按钮
     }
 
     function endAuction() {
-        websocket.send(JSON.stringify({
+        ws.send(JSON.stringify({
             "key": "end",
-            "auctionID": $("auctionID").val()
+            "auctionID": parseInt($("#auctionID").text()),
         }));
-        $("#end-btn").attr("disabled", "disabled");
+        $("#end-btn").attr("disabled", true);
     }
 </script>
 </body>

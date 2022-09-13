@@ -92,7 +92,6 @@
       "email": $("#email").val(),
       "pwd": $("#pwd").val()
     };
-    console.log(jsonObj);
     $.ajax({
       url: "/auctioneer/login",
       method: "post",
@@ -102,7 +101,6 @@
       cache: false,
       dataType: "json",
       success: function (data) {
-        console.log(data);
         if (data.code === 1) {
           alert("拍卖师邮箱不存在！");
         } else if (data.code === 2) {
