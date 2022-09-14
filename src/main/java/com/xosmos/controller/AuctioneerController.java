@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -87,6 +85,18 @@ public class AuctioneerController {
         return "auctioneer/update-info";
     }
 
+    @PostMapping(value =  "/update-info")
+    public String update_info(@RequestBody Auctioneer auctioneer, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Integer auctioneerID = (Integer) session.getAttribute("auctioneerID");
+        Auctioneer queryAuctioneer = auctioneerService.queryAuctioneerByID(auctioneerID);
+        queryAuctioneer.setAuctioneerName(auctioneer.getAuctioneerName());
+        queryAuctioneer.setPwd(EncryptUtils.encrypt(auctioneer.getPwd()));
+        auctioneerService.updateAuctioneer(queryAuctioneer);
+        return "redirect:/auctioneer/center";
+    }
+
+
     @GetMapping("/auction-venue-list")
     public String auction_venue_list(Model model) {
         model.addAttribute("cite", "auction-venue-list-iframe");
@@ -135,7 +145,7 @@ public class AuctioneerController {
                 int auctionID = Integer.parseInt(auctionIDString);
                 AuctionRecord auctionRecord =
                         new AuctionRecord(null, auctionID, null,
-                                venueID, null, null, null,  0);
+                                venueID, new Timestamp(System.currentTimeMillis()), null, null,  0);
                 Auction auction = auctionService.queryAuctionByID(auctionID);
                 auction.setStatus("拍卖中");
                 int flag1 = auctionService.updateAuction(auction);
@@ -175,6 +185,13 @@ public class AuctioneerController {
         AuctionVenue auctionVenue = auctionVenueService.queryAuctionVenueByID(venueID);
         auctionVenue.setEndTime(endTime);
         auctionVenue.setOnline(false);
+        List<Auction> auctions = auctionService.queryAuctionsByVenueID(venueID);
+        for (Auction auction : auctions) {
+            if (!auction.getStatus().equals("已拍卖")) {
+                auction.setStatus("流拍");
+                auctionService.updateAuction(auction);
+            }
+        }
         int flag = auctionVenueService.updateAuctionVenue(auctionVenue);
         if (flag != 1)
             System.err.println("更新失败！");

@@ -40,6 +40,11 @@ public class AuctioneerServiceImpl implements AuctioneerService {
     }
 
     @Override
+    public int updateAuctioneer(Auctioneer auctioneer) {
+        return auctioneerMapper.updateAuctioneer(auctioneer);
+    }
+
+    @Override
     public int logoutAuctioneer(Auctioneer auctioneer) {
         auctioneer.setLogout(true);
         return auctioneerMapper.updateAuctioneer(auctioneer);

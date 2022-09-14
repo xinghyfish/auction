@@ -17,5 +17,7 @@ public interface AuctioneerService {
 
     int addAuctioneer(Auctioneer auctioneer);
 
+    int updateAuctioneer(Auctioneer auctioneer);
+
     int logoutAuctioneer(Auctioneer auctioneer);
 }

@@ -25,10 +25,15 @@ public class WebSocketServer {
     private static AuctionService auctionService;
     private static AuctionRecordService auctionRecordService;
     private static AuctionVenueService auctionVenueService;
-    private Integer venueID;
+    private Integer venueID = -1;
     private static int customerID = -1; // 将信息交给服务器来存储
     private static int finalPrice = -1;
-    private static String sessionID = null;
+
+    private void init() {
+        venueID = -1;
+        customerID = -1;
+        finalPrice = -1;
+    }
 
     @Autowired
     public void setAuctionRecordService(AuctionRecordService auctionRecordService) {
@@ -65,7 +70,6 @@ public class WebSocketServer {
     public void onMessage(Session session, String message) {
         JSONObject json = new JSONObject(message);
         String key = (String) json.get("key");
-        System.out.println(json);
         switch (key) {
             case "begin" -> { // 进入拍卖系统开始拍卖
                 Integer auctionID = (Integer) json.get("auctionID");
@@ -85,7 +89,6 @@ public class WebSocketServer {
                 Timestamp endTime = new Timestamp(System.currentTimeMillis());
                 AuctionRecord auctionRecord = auctionRecordService.queryAuctionRecordByVenueIDAndAuctionID(this.venueID, auctionID);
                 auctionRecord.setEndTime(endTime);
-                JSONObject res = new JSONObject();
                 // 更新拍卖信息
                 if (finalPrice != -1) { // 成功拍卖
                     auctionRecord.setCustomerID(customerID);
@@ -93,14 +96,13 @@ public class WebSocketServer {
                     auctionRecord.setStatus(1);
                     // 通知所有买家结果
                     json.put("customerID", customerID);
+                    json.put("status", status);
                 } else { // 流拍
                     auctionRecord.setVenueID(2);
                 }
                 int flag = auctionRecordService.updateAuctionRecord(auctionRecord);
                 if (flag != 1)
                     System.err.println("更新拍卖记录失败！");
-                else
-                    this.sendAll(res);
             }
             case "price" -> { // 叫价，更新价格
                 int currentCustomerID = (Integer) json.get("customerID");
@@ -108,7 +110,6 @@ public class WebSocketServer {
                 if (currentPrice > finalPrice) {
                     finalPrice = currentPrice;
                     customerID = currentCustomerID;
-                    sessionID = session.getId();
                 }
                 Timestamp updateTime = new Timestamp(System.currentTimeMillis());
                 json.put("updateTime", updateTime);
@@ -127,6 +128,7 @@ public class WebSocketServer {
             }
         }
         this.sendAll(json);
+        if (key.equals("end")) init();
     }
 
 

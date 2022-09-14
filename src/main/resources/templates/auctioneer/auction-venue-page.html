@@ -60,9 +60,8 @@
                         </dl>
                         <br>
                         <div style="text-align: center">
-                            <button id="start-btn" class="btn btn-primary" onclick="startAuction()" th:disabled="${auction.status} != '未拍卖'">开始拍卖</button>
-                            <button id="end-btn" class="btn btn-danger" onclick="endAuction()" th:disabled="${auction.status} != '拍卖中'">结束拍卖</button>
-                        </div>
+                            <button id="start-btn" class="btn btn-primary" onclick="startAuction()">开始拍卖</button>
+                            <button id="end-btn" class="btn btn-danger" onclick="endAuction()">结束拍卖</button>
                     </div>
                 </div>
             </div>

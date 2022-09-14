@@ -80,7 +80,7 @@ public class CustomerController {
     }
 
     @GetMapping("/center")
-    public String center(HttpServletRequest request, Model model) {
+    public String center(Model model) {
         model.addAttribute("cite", "info");
         return "customer/center";
     }
@@ -131,10 +131,9 @@ public class CustomerController {
         Integer customerID = (Integer) session.getAttribute("customerID");
         Customer old_customer = customerService.queryCustomerByCustomerID(customerID);
         old_customer.setCustomerName(customer.getCustomerName());
-        old_customer.setPwd(customer.getPwd());
+        old_customer.setPwd(EncryptUtils.encrypt(customer.getPwd()));
         customerService.updateCustomer(old_customer);
-
-        return "redirect:/customer/info";
+        return "redirect:/customer/center";
     }
 
     @GetMapping("/auction-venue-list")

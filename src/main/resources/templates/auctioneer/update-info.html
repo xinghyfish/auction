@@ -45,7 +45,7 @@
     function checkForm() {
         let err_msg = "";
         let pwd_component = $("#pwd"), surePwd_component = $("#sure-pwd");
-        let auctioneerName_component = $("#customerName");
+        let auctioneerName_component = $("#auctioneerName");
         if (pwd_component.val() !== surePwd_component.val()) {
             err_msg = "两次输入的密码不一致，请重新输入。"
         } else if (auctioneerName_component.val().length > 30) {
@@ -68,8 +68,9 @@
                 dataType: "json",
                 contentType: "application/json",
                 async: false,
-                cache: false
+                cache: false,
             });
+            document.location.href = "/auctioneer/info";
         }
     }
 </script>

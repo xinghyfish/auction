@@ -29,7 +29,6 @@
 
     function checkForm() {
         if (checkName() && checkPwd() && checkEmail() && checkPhone()) {
-            console.log("HAHA");
             $.ajax({
                 url: "/customer/register",
                 method: "post",
