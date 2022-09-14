@@ -17,7 +17,7 @@ public interface AuctionRecordMapper {
 
     List<AuctionRecord> queryAuctionRecordByCustomerID(int customerID);
 
-    List<AuctionRecord> queryAuctionRecordByAuctionVenueID(int venueID);
+    List<AuctionRecord> queryAuctionRecordByVenueID(int venueID);
 
     AuctionRecord queryAuctionRecordByVenueIDAndAuctionID(int venueID, int auctionID);
 

@@ -151,14 +151,14 @@ public class CustomerController {
 
     @GetMapping("/auction-venue")
     public String auction_venue(@RequestParam int venueID, Model model) {
-        List<AuctionRecord> auctionRecords = auctionRecordService.queryAuctionRecordByAuctionVenueID(venueID);
+        List<AuctionRecord> auctionRecords = auctionRecordService.queryAuctionRecordByVenueID(venueID);
         model.addAttribute("auctionRecords", auctionRecords);
         return "customer/auction-venue";
     }
 
     @GetMapping("/auction-venue-iframe")
     public String auction_venue_iframe(@RequestBody AuctionVenue auctionVenue, Model model) {
-        List<AuctionRecord> auctionRecords = auctionRecordService.queryAuctionRecordByAuctionVenueID(auctionVenue.getVenueID());
+        List<AuctionRecord> auctionRecords = auctionRecordService.queryAuctionRecordByVenueID(auctionVenue.getVenueID());
         model.addAttribute("auctionRecords", auctionRecords);
         return "customer/auction-venue";
     }

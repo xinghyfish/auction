@@ -38,7 +38,7 @@ public class AuctionServiceImpl implements AuctionService {
 
     @Override
     public List<Auction> queryAuctionsByVenueID(int venueID) {
-        List<AuctionRecord> auctionRecords = auctionRecordMapper.queryAuctionRecordByAuctionVenueID(venueID);
+        List<AuctionRecord> auctionRecords = auctionRecordMapper.queryAuctionRecordByVenueID(venueID);
         List<Auction> auctions = new ArrayList<>();
         for (AuctionRecord record : auctionRecords)
             auctions.add(queryAuctionByID(record.getAuctionID()));

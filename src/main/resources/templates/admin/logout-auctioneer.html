@@ -37,7 +37,7 @@
     function checkForm() {
         let err_msg = "";
         let email_component = $("#email"), sureEmail_component = $("#sure-email");
-        if (email_component.val() !== sureEmail_component.val)
+        if (email_component.val() !== sureEmail_component.val())
             err_msg = "两次输入的不一致邮箱，请重新输入"
         if (err_msg !== "") {
             let err_component = document.getElementById("error-text");
@@ -52,6 +52,7 @@
                     "email": email_component.val()
                 }),
                 dataType: "json",
+                contentType: "application/json",
                 async: false,
                 cache: false
             });

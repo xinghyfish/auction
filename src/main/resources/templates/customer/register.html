@@ -6,18 +6,58 @@
     <title>注册</title>
     <link rel="stylesheet" type="text/css" href="/css/register.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+    <style>
+        .code {
+            font-family: Arial;
+            font-style:italic;
+            color:blue;
+            font-size:30px;
+            border:0;
+            padding:2px 3px;
+            letter-spacing:3px;
+            font-weight:bolder;
+            float:left;
+            cursor:pointer;
+            width:150px;
+            height:50px;
+            line-height:60px;
+            text-align:center;
+            vertical-align:middle;
+            background-color:#D8B7E3;
+        }
+        span {
+            text-decoration:none;
+            font-size:12px;
+            color:#288bc4;
+            padding-left:10px;
+        }
+
+        span:hover {
+            text-decoration:underline;
+            cursor:pointer;
+        }
+
+    </style>
 </head>
 
 <body>
 <div id="loginDiv">
     <form action="#">
         <h1>注册</h1>
-        <p>用户姓名: <label for="customerName" id="name_trip"><input id="customerName" name="customerName" type="text" required></label></p>
+        <p><label for="customerName" id="name_trip">用户姓名:</label><input id="customerName" name="customerName" type="text" required></p>
         <b class="">用户名长度应该在6-30个字符之间</b>
-        <p>用户密码: <label for="password" id="password_trip"><input id="password" name="pwd" type="password" required></label></p>
-        <p>确认密码: <label for="surePassword" id="surePassword_trip"><input id="surePassword" type="password" required></label></p>
-        <p>电子邮件: <label for="email" id="emil_trip"></label><input id="email" name="email" type="email" required></p>
-        <p>手机号码: <label for="phone" id="phone_trip"><input id="phone" type="text" required></label></p>
+        <p><label for="password" id="password_trip">用户密码: </label><input id="password" name="pwd" type="password" required></p>
+        <p><label for="surePassword" id="surePassword_trip">确认密码: </label><input id="surePassword" type="password" required></p>
+        <p><label for="email" id="emil_trip">电子邮件: </label><input id="email" name="email" type="email" required></p>
+        <p><label for="phone" id="phone_trip">手机号码: </label><input id="phone" type="text" required></p>
+        <p><label for="inputCode">验 证 码：</label><input type="text" id="inputCode" /></p>
+        <table border="0" cellspacing="5" cellpadding="5" >
+            <tr>
+                <td> <div id="checkCode" class="code"  onclick="createCode(4)" ></div></td>
+                <td> <span onclick="createCode(4)">看不清换一张</span></td>
+            </tr>
+        </table>
         <p style="text-align: center; margin-top: 30px;">
             <button type="button" class="button" style="text-align: center;" onclick="checkForm()">提交</button>
             <button type="reset" class="button" style="text-align: center;">重置</button>
@@ -25,10 +65,71 @@
     </form>
 </div>
 <script>
+    //页面加载时，生成随机验证码
+    window.onload=function(){
+        createCode(4);
+    }
+
+    //生成验证码的方法
+    function createCode(length) {
+        let code = "";
+        let codeLength = parseInt(length); //验证码的长度
+        let checkCode = document.getElementById("checkCode");
+        ////所有候选组成验证码的字符，当然也可以用中文的
+        let codeChars = [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            'a', 'b', 'c', 'd', 'e', 'f', 'g',
+            'h', 'i', 'j', 'k', 'l', 'm', 'n',
+            'o', 'p', 'q', 'r', 's', 't',
+            'u', 'v', 'w', 'x', 'y', 'z',
+            'A', 'B', 'C', 'D', 'E', 'F', 'G',
+            'H', 'I', 'J', 'K', 'L', 'M', 'N',
+            'O', 'P', 'Q', 'R', 'S', 'T',
+            'U', 'V', 'W', 'X', 'Y', 'Z'];
+        //循环组成验证码的字符串
+        for (let i = 0; i < codeLength; i++)
+        {
+            //获取随机验证码下标
+            let charNum = Math.floor(Math.random() * 62);
+            //组合成指定字符验证码
+            code += codeChars[charNum];
+        }
+        if (checkCode)
+        {
+            //为验证码区域添加样式名
+            checkCode.className = "code";
+            //将生成验证码赋值到显示区
+            checkCode.innerHTML = code;
+        }
+    }
+
+    //检查验证码是否正确
+    function validateCode()
+    {
+        //获取显示区生成的验证码
+        let checkCode = document.getElementById("checkCode").innerHTML;
+        //获取输入的验证码
+        let inputCode = document.getElementById("inputCode").value;
+        //console.log(checkCode);
+        //console.log(inputCode);
+        if (inputCode.length <= 0) {
+            alert("请输入验证码！");
+            return false;
+        }
+        else if (inputCode.toUpperCase() !== checkCode.toUpperCase()) {
+            alert("验证码输入有误！");
+            createCode(4);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     let name = $("#customerName"), pwd = $("#password"), sure_pwd = $("#surePassword"), email = $("#email"), phone = $("#phone");
 
     function checkForm() {
-        if (checkName() && checkPwd() && checkEmail() && checkPhone()) {
+        if (checkName() && checkPwd() && checkEmail() && checkPhone() && validateCode()) {
             $.ajax({
                 url: "/customer/register",
                 method: "post",

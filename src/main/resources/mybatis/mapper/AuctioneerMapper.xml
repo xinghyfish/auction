@@ -29,7 +29,7 @@
 
     <update id="updateAuctioneer" parameterType="Auctioneer">
         update auction.auctioneer
-        set auctioneerName = #{auctioneerName}, pwd = #{pwd}, email = #{email}, phone = #{phone}
+        set auctioneerName = #{auctioneerName}, pwd = #{pwd}, email = #{email}, phone = #{phone}, isLogout = #{isLogout}
         where auctioneerID = #{auctioneerID};
     </update>
 </mapper>

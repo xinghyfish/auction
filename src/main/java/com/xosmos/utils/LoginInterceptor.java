@@ -12,7 +12,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         Integer customerID = (Integer) request.getSession().getAttribute("customerID");
-        Integer adminID = (Integer) request.getSession().getAttribute("adminID");
+        String adminID = (String) request.getSession().getAttribute("adminID");
         Integer auctioneerID = (Integer) request.getSession().getAttribute("auctioneerID");
 
         if (customerID == null && adminID == null && auctioneerID == null) {
